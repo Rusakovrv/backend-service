@@ -15,6 +15,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class CompositeID implements Serializable {
 
-	private Long userId;
-	private String userVersion;
+	private Long id;
+	private String version;
 }

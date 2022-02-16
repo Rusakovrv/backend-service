@@ -5,14 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -32,17 +33,21 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
-	private Long userId;
+	private Long id;
 
 	@Id
-	private String userVersion;
+	private String version;
 
-	@NotNull
 	@Column
+	@NotNull
 	private String firstName;
+
 	@Column
 	private String lastName;
 
-	@OneToMany(mappedBy = "address")
+	@OneToMany(mappedBy = "user", cascade = {CascadeType.ALL}, orphanRemoval = true)
 	private List<UserAddressRelationship> addressRelationships;
+
+//	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//	private List<Address> addresses;
 }

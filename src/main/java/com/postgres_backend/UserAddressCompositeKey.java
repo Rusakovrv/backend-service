@@ -17,8 +17,9 @@ import java.io.Serializable;
 public class UserAddressCompositeKey implements Serializable {
 
 	@Embedded
-	private CompositeID userCompositeId;
+	private CompositeID user;
 
 	@Embedded
-	private AddressCompositeID addressCompositeId;
+	private CompositeID address;
+
 }

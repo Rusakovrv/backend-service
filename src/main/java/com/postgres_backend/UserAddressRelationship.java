@@ -5,33 +5,31 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@IdClass(UserAddressCompositeKey.class)
 public class UserAddressRelationship {
 
-	@EmbeddedId
-	private UserAddressCompositeKey id;
 
-	@ManyToOne
-	@MapsId("userCompositeId")
-	@JoinColumns({@JoinColumn(name = "user_id"), @JoinColumn(name ="user_version")})
+	@Id
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({@JoinColumn(name = "user.id"), @JoinColumn(name = "user.version")})
 	private User user;
 
-	@ManyToOne
-	@MapsId("addressCompositeId")
-	@JoinColumns({@JoinColumn(name = "address_id"), @JoinColumn(name ="address_version")})
+	@Id
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({@JoinColumn(name = "address.id", referencedColumnName = "id"), @JoinColumn(name = "address.version", referencedColumnName = "version")})
 	private Address address;
 
 	private String type;

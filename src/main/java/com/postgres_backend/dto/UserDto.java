@@ -1,8 +1,12 @@
 package com.postgres_backend.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
+@Builder
 public class UserDto {
 
 	private Long id;
@@ -11,6 +15,7 @@ public class UserDto {
 
 	private String lastName;
 
-	private UserDataDto userData;
+	private String version;
 
+	private List<UserAddressRelationshipDto> relationshipDto;
 }

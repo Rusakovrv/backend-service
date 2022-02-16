@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -35,19 +36,19 @@ public class UserController {
 	}
 
 	@PostMapping
-	public User createUser(UserDto user)
+	public UserDto createUser(@RequestBody UserDto user)
 	{
 		return userService.saveUser(UserDtoToEntity(user));
 	}
 
 	@PostMapping("/entity")
-	public User createUserByEntity(User user)
+	public UserDto createUserByEntity(@RequestBody User user)
 	{
 		return userService.saveUser(user);
 	}
 
 	@PostMapping("/address")
-	public Address createAddressByEntity(Address address)
+	public Address createAddressByEntity(@RequestBody Address address)
 	{
 		return userService.saveAddress(address);
 	}

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +13,7 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import java.util.Objects;
 
 @Entity
 @Builder
@@ -24,7 +26,7 @@ public class UserAddressRelationship {
 
 	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumns({@JoinColumn(name = "user.id"), @JoinColumn(name = "user.version")})
+	@JoinColumns({@JoinColumn(name = "user.id", referencedColumnName = "id"), @JoinColumn(name = "user.version", referencedColumnName = "version")})
 	private User user;
 
 	@Id
@@ -33,5 +35,25 @@ public class UserAddressRelationship {
 	private Address address;
 
 	private String type;
+
+	public UserAddressCompositeKey getId()
+	{
+		return UserAddressCompositeKey.builder().user(CompositeID.builder().id(user.getId()).version(user.getVersion()).build()).address(CompositeID.builder().id(address.getId()).version(address.getVersion()).build()).build();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
+			return false;
+		UserAddressRelationship that = (UserAddressRelationship) o;
+		return user != null && address != null && Objects.equals(user, that.user) && Objects.equals(address, that.address);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(user, address);
+	}
 
 }

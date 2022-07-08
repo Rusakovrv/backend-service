@@ -4,6 +4,7 @@ import com.postgres_backend.Address;
 import com.postgres_backend.User;
 import com.postgres_backend.UserService;
 import com.postgres_backend.dto.UserDto;
+import com.postgres_backend.mapper.UserDtoMapper;
 import com.postgres_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 import static com.postgres_backend.mapper.UserDtoMapper.UserDtoToEntity;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -30,9 +32,10 @@ public class UserController {
 	private UserService userService;
 
 	@GetMapping
-	public List<User> getAllUsers()
+	public List<UserDto> getAllUsers()
 	{
-		return userService.getAll();
+		var users = userService.getAll();
+		return users.stream().map(u -> UserDtoMapper.UserEntityToDto(u)).collect(Collectors.toList());
 	}
 
 	@PostMapping

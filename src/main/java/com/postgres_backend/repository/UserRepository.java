@@ -9,6 +9,4 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, CompositeID> {
 
 	List<User> findAll();
-
-	User save(User user);
 }

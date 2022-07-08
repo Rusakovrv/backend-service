@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.Hibernate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Builder
@@ -48,4 +50,19 @@ public class Address {
 //	@ManyToOne(fetch = FetchType.LAZY)
 //	@JoinColumn(name = "user_id")
 //	private User user;
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
+			return false;
+		Address that = (Address) o;
+		return id != null && version != null && Objects.equals(id, that.id) && Objects.equals(version, that.version);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, version);
+	}
 }
